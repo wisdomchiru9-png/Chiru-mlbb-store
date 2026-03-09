@@ -253,4 +253,4 @@ function confirmPayment(){
 
 /* LOAD PACKAGES ON PAGE START */
 
-document.addEventListener("DOMContentLoaded", loadPackages);
+// document.addEventListener("DOMContentLoaded", loadPackages);
