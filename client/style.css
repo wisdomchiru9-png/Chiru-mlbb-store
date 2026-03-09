@@ -18,19 +18,21 @@ h1, h2, h3 {
 
 .banner{
     text-align:center;
-    padding:100px 20px;
-    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.8)), url("banner.png") center/cover no-repeat;
+    padding:120px 20px;
+    background: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.7)), url("banner.png") center/cover no-repeat;
     position:relative;
     color:white;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 2px solid #00ffd5;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .banner h1{
-    font-size:48px;
-    letter-spacing:4px;
-    color:#00ffd5;
-    text-shadow: 0 0 20px rgba(0, 255, 213, 0.5), 0 0 40px rgba(0, 255, 213, 0.2);
+    font-size:56px;
+    letter-spacing:6px;
+    color:#fff;
+    text-shadow: 0 0 15px rgba(0, 255, 213, 0.8), 0 0 30px rgba(0, 255, 213, 0.4);
     margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
 .banner p {
