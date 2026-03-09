@@ -163,28 +163,28 @@ async function order(packageId){
 
 /* STATIC PACKAGE SELECT */
 
-function selectPack(pack,price){
+function selectPack(pack, price){
 
   const uid = document.getElementById("uid").value;
   const server = document.getElementById("server").value;
 
   if(!uid || !server){
-
     alert("Enter Player ID and Server ID first");
     return;
-
   }
 
   selectedPack = pack;
   selectedPrice = price;
-
   currentOrder = null;
+
+  const box = document.getElementById("orderBox");
 
   document.getElementById("orderInfo").innerText =
   pack + " - ₹" + price;
 
-  document.getElementById("orderBox")
-  .classList.remove("hidden");
+  box.classList.remove("hidden");
+
+  box.scrollIntoView({ behavior: "smooth" });
 
 }
 
@@ -201,21 +201,16 @@ function confirmPayment(){
   document.getElementById("paymentProof");
 
   if(!uid || !server){
-
     alert("Enter Player ID and Server ID first");
     return;
-
   }
 
   if(fileInput.files.length === 0){
-
     alert("Upload payment screenshot");
     return;
-
   }
 
   let message = "";
-
 
   if(currentOrder){
 
@@ -241,7 +236,6 @@ function confirmPayment(){
     "Payment screenshot uploaded.";
 
   }
-
 
   const phone = "919863713522";
 
