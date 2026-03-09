@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHIRU MLBB STORE</title>
 <link rel="stylesheet" href="style.css">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3523/3523063.png">
+
 </head>
 
 <body>
@@ -21,7 +23,7 @@
 </header>
 
 <!-- PLAYER INFO -->
-<div class="player">
+<div class="player-info">
 <h2>Enter Player Details</h2>
 
 <input id="uid" placeholder="Player ID">
@@ -32,7 +34,9 @@
 
 <!-- Avatar + Nickname -->
 <br><br>
-<img id="avatar" width="60" alt="Player Avatar">
+<img id="avatar" width="60"
+src="https://via.placeholder.com/60"
+alt="Player Avatar">
 <p id="nickname"></p>
 </div>
 
@@ -128,7 +132,7 @@
 
 <p><b>Upload Payment Screenshot</b></p>
 
-<input type="file" id="paymentProof" accept="image/*">
+<input type="file" id="paymentProof" accept="image/*" required>
 
 <br><br>
 
