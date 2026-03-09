@@ -4,16 +4,16 @@ let selectedPrice = "";
 
 
 /* LOAD PACKAGES FROM API */
+
 async function loadPackages() {
+
+  const container = document.getElementById("packages");
+  if(!container) return;
 
   try {
 
     const res = await fetch("/api/packages");
     const packages = await res.json();
-
-    const container = document.getElementById("packages");
-
-    if(!container) return;
 
     container.innerHTML = "";
 
@@ -23,7 +23,9 @@ async function loadPackages() {
 
       const card = `
         <div class="card">
+
           <img src="https://cdn-icons-png.flaticon.com/512/3523/3523063.png" width="60">
+
           <h3>${p.name}</h3>
 
           <p class="price">
@@ -35,6 +37,7 @@ async function loadPackages() {
           <p class="off">${discount}% OFF</p>
 
           <button onclick="order(${p.id})">Buy</button>
+
         </div>
       `;
 
@@ -44,7 +47,7 @@ async function loadPackages() {
 
   } catch (err) {
 
-    console.log("API packages not available");
+    console.log("Packages API unavailable");
 
   }
 
@@ -54,7 +57,7 @@ async function loadPackages() {
 
 /* PLAYER CHECK API */
 
-async function checkPlayer() {
+async function checkPlayer(){
 
   const uid = document.getElementById("uid").value;
   const server = document.getElementById("server").value;
@@ -65,13 +68,14 @@ async function checkPlayer() {
     "Invalid Player ID or Server";
 
     return;
+
   }
 
   try {
 
-    const res = await fetch("/api/check-player", {
+    const res = await fetch("/api/check-player",{
 
-      method: "POST",
+      method:"POST",
 
       headers:{
         "Content-Type":"application/json"
@@ -86,9 +90,12 @@ async function checkPlayer() {
     document.getElementById("nickname").innerText =
     "Player: " + data.nickname + " ✔";
 
-    document.getElementById("avatar").src = data.avatar;
+    if(data.avatar){
+      document.getElementById("avatar").src = data.avatar;
+    }
 
   }
+
   catch(err){
 
     document.getElementById("nickname").innerText =
@@ -110,8 +117,8 @@ async function order(packageId){
   if(!uid || !server){
 
     alert("Enter Player ID and Server ID first");
-
     return;
+
   }
 
   try{
@@ -137,13 +144,13 @@ async function order(packageId){
     currentOrder = data;
 
     document.getElementById("orderInfo").innerText =
-    "Order ID: " + data.orderId +
-    " | Pay ₹" + data.price;
+    "Order ID: " + data.orderId + " | Pay ₹" + data.price;
 
     document.getElementById("orderBox")
     .classList.remove("hidden");
 
   }
+
   catch(err){
 
     alert("Order creation failed");
@@ -164,12 +171,14 @@ function selectPack(pack,price){
   if(!uid || !server){
 
     alert("Enter Player ID and Server ID first");
-
     return;
+
   }
 
   selectedPack = pack;
   selectedPrice = price;
+
+  currentOrder = null;
 
   document.getElementById("orderInfo").innerText =
   pack + " - ₹" + price;
@@ -194,19 +203,18 @@ function confirmPayment(){
   if(!uid || !server){
 
     alert("Enter Player ID and Server ID first");
-
     return;
+
   }
 
   if(fileInput.files.length === 0){
 
-    alert("Please upload payment screenshot");
-
+    alert("Upload payment screenshot");
     return;
+
   }
 
   let message = "";
-
 
 
   if(currentOrder){
@@ -218,7 +226,7 @@ function confirmPayment(){
     "Server ID: " + currentOrder.server + "\n" +
     "Package: " + currentOrder.package + "\n" +
     "Price: ₹" + currentOrder.price + "\n\n" +
-    "I have uploaded the payment screenshot.";
+    "Payment screenshot uploaded.";
 
   }
 
@@ -230,10 +238,9 @@ function confirmPayment(){
     "Server ID: " + server + "\n" +
     "Package: " + selectedPack + "\n" +
     "Price: ₹" + selectedPrice + "\n\n" +
-    "I have uploaded the payment screenshot.";
+    "Payment screenshot uploaded.";
 
   }
-
 
 
   const phone = "919863713522";
@@ -252,4 +259,4 @@ function confirmPayment(){
 
 /* LOAD PACKAGES ON PAGE START */
 
-loadPackages();
+document.addEventListener("DOMContentLoaded", loadPackages);
