@@ -1,12 +1,11 @@
 module.exports = [
- { id:1, name:"86 Diamonds", original:90, price:75 },
- { id:2, name:"172 Diamonds", original:180, price:145 },
- { id:3, name:"257 Diamonds", original:270, price:210 },
- { id:4, name:"344 Diamonds", original:360, price:280 },
- { id:5, name:"429 Diamonds", original:450, price:350 },
- { id:6, name:"514 Diamonds", original:540, price:420 },
- { id:7, name:"706 Diamonds", original:720, price:560 },
- { id:8, name:"878 Diamonds", original:900, price:690 },
- { id:9, name:"963 Diamonds", original:980, price:760 },
- { id:10, name:"Weekly Pass", original:200, price:165 }
+ { id:1, name:"11 (10+1) Diamonds", original:39, price:29 },
+ { id:2, name:"86 (78+8) Diamonds", original:150, price:125 },
+ { id:3, name:"172 (156+16) Diamonds", original:300, price:250 },
+ { id:4, name:"257 (234+23) Diamonds", original:450, price:375 },
+ { id:5, name:"344 (312+32) Diamonds", original:600, price:500 },
+ { id:6, name:"429 (390+39) Diamonds", original:700, price:625 },
+ { id:7, name:"514 (468+46) Diamonds", original:900, price:750 },
+ { id:8, name:"706 (625+81) Diamonds", original:1150, price:960 },
+ { id:9, name:"Weekly Diamond Pass", original:219, price:150 }
 ];

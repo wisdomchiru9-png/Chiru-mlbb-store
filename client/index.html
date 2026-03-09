@@ -1,50 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chiru MLBB Store</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHIRU MLBB STORE</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
-  <h1>💎 Chiru MLBB Store</h1>
-  <p>Fast & Safe Diamond Top-Up</p>
+<header class="banner">
+<h1>CHIRU MLBB STORE</h1>
+<p>Instant MLBB Diamond Recharge</p>
+
+<div class="features">
+<div>⚡ Instant Delivery</div>
+<div>🔒 Secure Payment</div>
+<div>💎 Best Prices</div>
+</div>
 </header>
 
 <!-- PLAYER INFO -->
 <div class="player">
-  <h2>Enter Player Details</h2>
+<h2>Enter Player Details</h2>
 
-  <input id="uid" placeholder="Player ID">
-  <input id="server" placeholder="Server ID">
-  <br>
+<input id="uid" placeholder="Player ID">
+<input id="server" placeholder="Server ID">
+<br>
 
-  <button onclick="checkPlayer()">Check Player</button>
+<button onclick="checkPlayer()">Check Player</button>
 
-  <!-- Avatar + Nickname -->
-  <img id="avatar" width="60" alt="Player Avatar">
-  <p id="nickname"></p>
+<!-- Avatar + Nickname -->
+<br><br>
+<img id="avatar" width="60" alt="Player Avatar">
+<p id="nickname"></p>
 </div>
 
+
 <!-- DIAMOND PACKAGES -->
-<h2>Choose Diamonds</h2>
-<div id="packages"></div>
+<section class="packages">
+
+<h2>Select Diamond Package</h2>
+
+<div class="package-grid">
+
+<div class="card">
+<h3>11 (10+1) Diamonds</h3>
+<p class="old">₹39</p>
+<p class="price">₹29</p>
+<button onclick="selectPack('11 Diamonds','29')">Select</button>
+</div>
+
+<div class="card">
+<h3>86 (78+8) Diamonds</h3>
+<p class="old">₹150</p>
+<p class="price">₹125</p>
+<button onclick="selectPack('86 Diamonds','125')">Select</button>
+</div>
+
+<div class="card">
+<h3>172 (156+16) Diamonds</h3>
+<p class="old">₹300</p>
+<p class="price">₹250</p>
+<button onclick="selectPack('172 Diamonds','250')">Select</button>
+</div>
+
+<div class="card">
+<h3>257 (234+23) Diamonds</h3>
+<p class="old">₹450</p>
+<p class="price">₹375</p>
+<button onclick="selectPack('257 Diamonds','375')">Select</button>
+</div>
+
+<div class="card">
+<h3>344 (312+32) Diamonds</h3>
+<p class="old">₹600</p>
+<p class="price">₹500</p>
+<button onclick="selectPack('344 Diamonds','500')">Select</button>
+</div>
+
+<div class="card">
+<h3>429 (390+39) Diamonds</h3>
+<p class="old">₹700</p>
+<p class="price">₹625</p>
+<button onclick="selectPack('429 Diamonds','625')">Select</button>
+</div>
+
+<div class="card">
+<h3>514 (468+46) Diamonds</h3>
+<p class="old">₹900</p>
+<p class="price">₹750</p>
+<button onclick="selectPack('514 Diamonds','750')">Select</button>
+</div>
+
+<div class="card">
+<h3>706 (625+81) Diamonds</h3>
+<p class="old">₹1150</p>
+<p class="price">₹960</p>
+<button onclick="selectPack('706 Diamonds','960')">Select</button>
+</div>
+
+<div class="card special">
+<h3>Weekly Diamond Pass</h3>
+<p class="old">₹219</p>
+<p class="price">₹150</p>
+<button onclick="selectPack('Weekly Pass','150')">Select</button>
+</div>
+
+</div>
+</section>
+
 
 <!-- PAYMENT BOX -->
 <div id="orderBox" class="hidden">
-  <h2>Complete Payment</h2>
-  <p id="orderInfo"></p>
-  <img src="upi-qr.png" width="220" alt="UPI QR">
-  <p>Scan this QR with any UPI app</p>
-  <button onclick="confirmPayment()">I Have Paid</button>
+
+<h2>Complete Payment</h2>
+
+<p id="orderInfo"></p>
+
+<img src="upi-qr.png" width="220" alt="UPI QR">
+
+<br><br>
+
+<p>Scan this QR with any UPI App and complete the payment</p>
+
+<br>
+
+<p><b>Upload Payment Screenshot</b></p>
+
+<input type="file" id="paymentProof" accept="image/*">
+
+<br><br>
+
+<button onclick="confirmPayment()">I Have Paid</button>
+
 </div>
 
+
 <footer>
-  <p>Powered by Chiru Store</p>
+<p>Powered by CHIRU MLBB STORE</p>
 </footer>
 
 <script src="script.js"></script>
+
 </body>
 </html>

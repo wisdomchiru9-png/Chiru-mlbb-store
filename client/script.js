@@ -1,97 +1,255 @@
 let currentOrder = null;
+let selectedPack = "";
+let selectedPrice = "";
 
+
+/* LOAD PACKAGES FROM API */
 async function loadPackages() {
-  const res = await fetch("/api/packages");
-  const packages = await res.json();
 
-  const container = document.getElementById("packages");
-  container.innerHTML = "";
+  try {
 
-  packages.forEach(p => {
-    const discount = Math.round(((p.original - p.price) / p.original) * 100);
+    const res = await fetch("/api/packages");
+    const packages = await res.json();
 
-    const card = `
-      <div class="card">
-        <img src="https://cdn-icons-png.flaticon.com/512/3523/3523063.png">
-        <h3>${p.name}</h3>
-        <p class="price">
-          <span class="original">₹${p.original}</span>
-          →
-          <span class="discount">₹${p.price}</span>
-        </p>
-        <p class="off">${discount}% OFF</p>
-        <button onclick="order(${p.id})">Buy</button>
-      </div>
-    `;
-    container.innerHTML += card;
-  });
+    const container = document.getElementById("packages");
+
+    if(!container) return;
+
+    container.innerHTML = "";
+
+    packages.forEach(p => {
+
+      const discount = Math.round(((p.original - p.price) / p.original) * 100);
+
+      const card = `
+        <div class="card">
+          <img src="https://cdn-icons-png.flaticon.com/512/3523/3523063.png" width="60">
+          <h3>${p.name}</h3>
+
+          <p class="price">
+            <span class="original">₹${p.original}</span>
+            →
+            <span class="discount">₹${p.price}</span>
+          </p>
+
+          <p class="off">${discount}% OFF</p>
+
+          <button onclick="order(${p.id})">Buy</button>
+        </div>
+      `;
+
+      container.innerHTML += card;
+
+    });
+
+  } catch (err) {
+
+    console.log("API packages not available");
+
+  }
+
 }
 
+
+
 /* PLAYER CHECK API */
+
 async function checkPlayer() {
+
   const uid = document.getElementById("uid").value;
   const server = document.getElementById("server").value;
 
-  if (uid.length < 5 || server.length < 1) {
-    document.getElementById("nickname").innerText = "Invalid Player ID or Server";
+  if(uid.length < 5 || server.length < 1){
+
+    document.getElementById("nickname").innerText =
+    "Invalid Player ID or Server";
+
     return;
   }
 
   try {
+
     const res = await fetch("/api/check-player", {
+
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
       body: JSON.stringify({ uid, server })
+
     });
 
     const data = await res.json();
 
-    // ✅ Show nickname + avatar
     document.getElementById("nickname").innerText =
-      "Player: " + data.nickname + " ✔";
+    "Player: " + data.nickname + " ✔";
 
     document.getElementById("avatar").src = data.avatar;
 
-  } catch (err) {
-    document.getElementById("nickname").innerText = "Could not verify player";
   }
+  catch(err){
+
+    document.getElementById("nickname").innerText =
+    "Could not verify player";
+
+  }
+
 }
 
-/* CREATE ORDER */
-async function order(packageId) {
+
+
+/* CREATE ORDER FROM API */
+
+async function order(packageId){
+
   const uid = document.getElementById("uid").value;
   const server = document.getElementById("server").value;
 
-  const res = await fetch("/api/create-order", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ uid, server, packageId })
-  });
+  if(!uid || !server){
 
-  const data = await res.json();
+    alert("Enter Player ID and Server ID first");
 
-  // Save current order for WhatsApp confirmation
-  currentOrder = data;
-
-  document.getElementById("orderInfo").innerText =
-    "Order ID: " + data.orderId + " | Pay ₹" + data.price;
-
-  document.getElementById("orderBox").classList.remove("hidden");
-}
-
-/* PAYMENT CONFIRMATION → WhatsApp */
-function confirmPayment() {
-  if (!currentOrder) {
-    alert("No order found");
     return;
   }
 
-  const message = `Hello, I completed payment for MLBB Diamonds.\n\nOrder ID: ${currentOrder.orderId}\nUID: ${currentOrder.uid}\nServer: ${currentOrder.server}\nPackage: ${currentOrder.package}\nPrice: ₹${currentOrder.price}\n\nPlease verify and send the diamonds.`;
+  try{
 
-  const phone = "919863713522"; // Your WhatsApp number
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    const res = await fetch("/api/create-order",{
 
-  window.open(url, "_blank");
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body: JSON.stringify({
+        uid,
+        server,
+        packageId
+      })
+
+    });
+
+    const data = await res.json();
+
+    currentOrder = data;
+
+    document.getElementById("orderInfo").innerText =
+    "Order ID: " + data.orderId +
+    " | Pay ₹" + data.price;
+
+    document.getElementById("orderBox")
+    .classList.remove("hidden");
+
+  }
+  catch(err){
+
+    alert("Order creation failed");
+
+  }
+
 }
+
+
+
+/* STATIC PACKAGE SELECT */
+
+function selectPack(pack,price){
+
+  const uid = document.getElementById("uid").value;
+  const server = document.getElementById("server").value;
+
+  if(!uid || !server){
+
+    alert("Enter Player ID and Server ID first");
+
+    return;
+  }
+
+  selectedPack = pack;
+  selectedPrice = price;
+
+  document.getElementById("orderInfo").innerText =
+  pack + " - ₹" + price;
+
+  document.getElementById("orderBox")
+  .classList.remove("hidden");
+
+}
+
+
+
+/* PAYMENT CONFIRMATION */
+
+function confirmPayment(){
+
+  const uid = document.getElementById("uid").value;
+  const server = document.getElementById("server").value;
+
+  const fileInput =
+  document.getElementById("paymentProof");
+
+  if(!uid || !server){
+
+    alert("Enter Player ID and Server ID first");
+
+    return;
+  }
+
+  if(fileInput.files.length === 0){
+
+    alert("Please upload payment screenshot");
+
+    return;
+  }
+
+  let message = "";
+
+
+
+  if(currentOrder){
+
+    message =
+    "CHIRU MLBB STORE ORDER\n\n" +
+    "Order ID: " + currentOrder.orderId + "\n" +
+    "Player ID: " + currentOrder.uid + "\n" +
+    "Server ID: " + currentOrder.server + "\n" +
+    "Package: " + currentOrder.package + "\n" +
+    "Price: ₹" + currentOrder.price + "\n\n" +
+    "I have uploaded the payment screenshot.";
+
+  }
+
+  else{
+
+    message =
+    "CHIRU MLBB STORE ORDER\n\n" +
+    "Player ID: " + uid + "\n" +
+    "Server ID: " + server + "\n" +
+    "Package: " + selectedPack + "\n" +
+    "Price: ₹" + selectedPrice + "\n\n" +
+    "I have uploaded the payment screenshot.";
+
+  }
+
+
+
+  const phone = "919863713522";
+
+  const url =
+  "https://wa.me/" +
+  phone +
+  "?text=" +
+  encodeURIComponent(message);
+
+  window.open(url,"_blank");
+
+}
+
+
+
+/* LOAD PACKAGES ON PAGE START */
 
 loadPackages();
