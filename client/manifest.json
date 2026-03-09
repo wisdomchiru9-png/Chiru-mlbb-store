@@ -1,0 +1,16 @@
+{
+  "name": "CHIRU MLBB STORE",
+  "short_name": "Chiru Store",
+  "description": "Fast & Reliable MLBB Diamond Recharge",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#00ffd5",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
