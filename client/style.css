@@ -1,47 +1,42 @@
 /* BASE LAYOUT */
 
 body{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     margin:0;
-    background:#0f172a;
+    background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
     color:white;
     text-align:center;
+    line-height: 1.6;
 }
 
-h1{
-    margin-top:20px;
+h1, h2, h3 {
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 /* BANNER */
 
 .banner{
     text-align:center;
-    padding:80px 20px;
-    background:url("banner.png") center/cover no-repeat;
+    padding:100px 20px;
+    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.8)), url("banner.png") center/cover no-repeat;
     position:relative;
     color:white;
-}
-
-.banner::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
-}
-
-.banner *{
-    position:relative;
-    z-index:2;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .banner h1{
-    font-size:40px;
-    letter-spacing:2px;
+    font-size:48px;
+    letter-spacing:4px;
     color:#00ffd5;
-    text-shadow:0 0 10px #00ffd5;
+    text-shadow: 0 0 20px rgba(0, 255, 213, 0.5), 0 0 40px rgba(0, 255, 213, 0.2);
+    margin-bottom: 10px;
+}
+
+.banner p {
+    font-size: 18px;
+    opacity: 0.9;
+    letter-spacing: 1px;
 }
 
 .features{
@@ -146,63 +141,46 @@ button:hover{
 /* CARD DESIGN */
 
 .card{
-    background:#1f1f2e;
-    padding:20px;
-    border-radius:12px;
-    color:white;
-    box-shadow:0 6px 15px rgba(0,0,0,0.4);
-    transition:0.3s;
-    position:relative;
-    overflow:hidden;
-    cursor: pointer; /* Make card clickable */
+    background: rgba(255, 255, 255, 0.03);
+    padding: 30px 20px;
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
 }
 
 .card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 10px 25px rgba(0,0,0,0.6);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 255, 213, 0.3);
 }
-
-/* GLOW EFFECT */
-
-.card::before{
-    content:"";
-    position:absolute;
-    top:-50%;
-    left:-50%;
-    width:200%;
-    height:200%;
-    background:linear-gradient(
-        45deg,
-        transparent,
-        rgba(0,255,255,0.3),
-        transparent
-    );
-    transform:rotate(25deg);
-    opacity:0;
-    transition:0.5s;
-}
-
-.card:hover::before{
-    opacity:1;
-}
-
-/* CARD TEXT */
 
 .card h3{
-    margin-bottom:10px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    letter-spacing: 0.5px;
 }
 
 .old{
-    text-decoration:line-through;
-    color:#aaa;
-    font-size:14px;
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 15px;
+    display: block;
+    margin-bottom: 5px;
 }
 
 .price{
-    font-size:22px;
-    font-weight:bold;
-    color:#00ffd5;
-    margin:10px 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #00ffd5;
+    margin: 10px 0;
+    text-shadow: 0 0 15px rgba(0, 255, 213, 0.3);
 }
 
 /* CARD BUTTON (Optional now that whole card is clickable) */
@@ -329,9 +307,105 @@ button:hover{
 
 /* FOOTER */
 
+/* TRUST & SUPPORT SECTIONS */
+
+.trust-section {
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    margin-top: 40px;
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+.stat-item h3 {
+    font-size: 32px;
+    color: #ffd700;
+    margin: 0;
+}
+
+.stat-item p {
+    font-size: 14px;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.support-section {
+    padding: 60px 20px;
+    background: linear-gradient(to bottom, transparent, rgba(0, 255, 213, 0.05));
+}
+
+.support-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.support-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.support-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.support-btn:hover {
+    background: rgba(0, 255, 213, 0.1);
+    border-color: #00ffd5;
+    transform: translateY(-3px);
+}
+
+.whatsapp-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #25d366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    text-decoration: none;
+    font-size: 30px;
+    transition: 0.3s;
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.1) rotate(10deg);
+}
+
 footer{
     text-align:center;
-    padding:20px;
+    padding:40px 20px;
     background:#0a0a12;
     font-size:14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: #888;
 }
