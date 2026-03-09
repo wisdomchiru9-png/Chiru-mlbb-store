@@ -3,9 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHIRU MLBB STORE</title>
+<title>CHIRU MLBB STORE | Instant MLBB Diamond Recharge</title>
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="Chiru MLBB Store - The fastest and most reliable way to recharge Mobile Legends diamonds in India. Instant delivery, secure UPI payments, and best prices.">
+<meta name="keywords" content="MLBB, Mobile Legends, Diamond Recharge, Chiru MLBB Store, ML Diamonds, Cheap ML Diamonds India, MLBB Topup">
+<meta name="author" content="Wisdom Chiru">
+
+<!-- Social Media (Open Graph) Meta Tags -->
+<meta property="og:title" content="CHIRU MLBB STORE | Instant Diamond Recharge">
+<meta property="og:description" content="Get your MLBB diamonds instantly! Best prices and secure UPI payments.">
+<meta property="og:image" content="/icon.png">
+<meta property="og:url" content="https://chirumlbbstore.com">
+<meta property="og:type" content="website">
+
+<!-- Instagram/Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CHIRU MLBB STORE">
+<meta name="twitter:description" content="Instant MLBB Diamond Recharge at Best Prices.">
+<meta name="twitter:image" content="/icon.png">
+
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3523/3523063.png">
+<link rel="icon" href="/icon.png">
 
 </head>
 
@@ -35,7 +54,7 @@
 <!-- Avatar + Nickname -->
 <br><br>
 <img id="avatar" width="60"
-src="https://via.placeholder.com/60"
+src="/icon.png"
 alt="Player Avatar">
 <p id="nickname"></p>
 </div>
@@ -44,75 +63,36 @@ alt="Player Avatar">
 <!-- DIAMOND PACKAGES -->
 <section class="packages">
 
-<h2>Select Diamond Package</h2>
+<h2>1. Select Diamond Package</h2>
 
-<div class="package-grid">
-
-<div class="card">
-<h3>11 (10+1) Diamonds</h3>
-<p class="old">₹39</p>
-<p class="price">₹29</p>
-<button onclick="selectPack('11 Diamonds','29')">Select</button>
-</div>
-
-<div class="card">
-<h3>86 (78+8) Diamonds</h3>
-<p class="old">₹150</p>
-<p class="price">₹125</p>
-<button onclick="selectPack('86 Diamonds','125')">Select</button>
-</div>
-
-<div class="card">
-<h3>172 (156+16) Diamonds</h3>
-<p class="old">₹300</p>
-<p class="price">₹250</p>
-<button onclick="selectPack('172 Diamonds','250')">Select</button>
-</div>
-
-<div class="card">
-<h3>257 (234+23) Diamonds</h3>
-<p class="old">₹450</p>
-<p class="price">₹375</p>
-<button onclick="selectPack('257 Diamonds','375')">Select</button>
-</div>
-
-<div class="card">
-<h3>344 (312+32) Diamonds</h3>
-<p class="old">₹600</p>
-<p class="price">₹500</p>
-<button onclick="selectPack('344 Diamonds','500')">Select</button>
-</div>
-
-<div class="card">
-<h3>429 (390+39) Diamonds</h3>
-<p class="old">₹700</p>
-<p class="price">₹625</p>
-<button onclick="selectPack('429 Diamonds','625')">Select</button>
-</div>
-
-<div class="card">
-<h3>514 (468+46) Diamonds</h3>
-<p class="old">₹900</p>
-<p class="price">₹750</p>
-<button onclick="selectPack('514 Diamonds','750')">Select</button>
-</div>
-
-<div class="card">
-<h3>706 (625+81) Diamonds</h3>
-<p class="old">₹1150</p>
-<p class="price">₹960</p>
-<button onclick="selectPack('706 Diamonds','960')">Select</button>
-</div>
-
-<div class="card special">
-<h3>Weekly Diamond Pass</h3>
-<p class="old">₹219</p>
-<p class="price">₹150</p>
-<button onclick="selectPack('Weekly Pass','150')">Select</button>
-</div>
-
+<div class="package-grid" id="packages">
+    <!-- Packages will be loaded dynamically -->
 </div>
 </section>
+
+<!-- PAYMENT METHODS -->
+<section class="payment-section">
+    <h2>2. Select Payment Method</h2>
+    <div class="payment-grid">
+        <div class="payment-card" onclick="selectPayment('UPI')">
+            <h3>UPI</h3>
+            <p>Google Pay, PhonePe, Paytm</p>
+        </div>
+        <div class="payment-card" onclick="selectPayment('Bank Transfer')">
+            <h3>Bank Transfer</h3>
+            <p>IMPS / NEFT</p>
+        </div>
+        <div class="payment-card" onclick="selectPayment('Wallet')">
+            <h3>Wallet</h3>
+            <p>Paytm Wallet</p>
+        </div>
+    </div>
+</section>
+
+<!-- BUY BUTTON -->
+<div class="action-area">
+    <button id="buyBtn" onclick="initiateOrder()">BUY NOW</button>
+</div>
 
 
 <!-- PAYMENT BOX -->

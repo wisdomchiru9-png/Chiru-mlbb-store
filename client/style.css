@@ -56,29 +56,77 @@ h1{
 /* PLAYER INFO */
 
 .player-info{
-    margin:20px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.player-info h2 {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin-bottom: 25px;
+}
+
+#avatar {
+    border: 3px solid #ffd700;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    margin-top: 20px;
+    transition: transform 0.3s;
+    background: #000;
+    padding: 2px;
+}
+
+#avatar:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
 }
 
 input{
-    padding:10px;
-    margin:5px;
-    border-radius:6px;
-    border:none;
-    width:180px;
+    padding: 12px 15px;
+    margin: 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 200px;
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #00ffd5;
+    box-shadow: 0 0 10px rgba(0, 255, 213, 0.3);
+}
+
+input::placeholder {
+    color: #aaa;
 }
 
 button{
-    background:#ff4c4c;
+    background: linear-gradient(45deg, #ff4c4c, #ff2b2b);
     border:none;
-    padding:10px 20px;
+    padding:12px 25px;
     color:white;
-    border-radius:6px;
+    border-radius:8px;
     cursor:pointer;
-    transition:0.2s;
+    transition:0.3s;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(255, 76, 76, 0.4);
 }
 
 button:hover{
-    background:#ff2b2b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 76, 76, 0.6);
 }
 
 /* PACKAGES SECTION */
@@ -106,6 +154,7 @@ button:hover{
     transition:0.3s;
     position:relative;
     overflow:hidden;
+    cursor: pointer; /* Make card clickable */
 }
 
 .card:hover{
@@ -156,8 +205,7 @@ button:hover{
     margin:10px 0;
 }
 
-/* CARD BUTTON */
-
+/* CARD BUTTON (Optional now that whole card is clickable) */
 .card button{
     background:linear-gradient(90deg,#ff512f,#dd2476);
     border:none;
@@ -176,15 +224,91 @@ button:hover{
 /* SPECIAL PACKAGE */
 
 .special{
-    border:2px solid gold;
-    box-shadow:0 0 15px gold;
+    border:1px solid rgba(255, 215, 0, 0.5);
+    background: linear-gradient(to bottom right, #1f1f2e, #2a2a40);
 }
 
-/* RESULT TEXT */
+.special h3 {
+    color: gold;
+}
 
-#result{
-    margin:20px;
-    font-size:18px;
+/* SELECTED PACKAGE STATE */
+
+.selected-card {
+    border: 2px solid #00ffd5;
+    box-shadow: 0 0 20px rgba(0, 255, 213, 0.4);
+    transform: scale(1.02);
+    background: #2a2a40;
+}
+
+/* PAYMENT METHODS SECTION */
+
+.payment-section {
+    padding: 20px;
+    text-align: center;
+}
+
+.payment-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.payment-card {
+    background: #1f1f2e;
+    padding: 20px;
+    border-radius: 12px;
+    width: 200px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: 0.3s;
+}
+
+.payment-card:hover {
+    background: #252538;
+    transform: translateY(-3px);
+}
+
+.payment-card h3 {
+    margin: 0;
+    color: #fff;
+}
+
+.payment-card p {
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.selected-payment {
+    border: 2px solid #00ffd5;
+    background: #2a2a40;
+    box-shadow: 0 0 15px rgba(0, 255, 213, 0.3);
+}
+
+/* ACTION AREA */
+
+.action-area {
+    margin: 40px 0;
+    text-align: center;
+}
+
+#buyBtn {
+    background: linear-gradient(90deg, #00ffd5, #00d2ff);
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px 40px;
+    border-radius: 50px;
+    box-shadow: 0 5px 20px rgba(0, 255, 213, 0.4);
+    transition: 0.3s;
+}
+
+#buyBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(0, 255, 213, 0.6);
 }
 
 /* PAYMENT BOX */
