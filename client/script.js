@@ -24,6 +24,15 @@ async function loadPackages() {
 
     container.innerHTML = "";
 
+    // Inject high-demand premium option for ultimate mode
+    packages.unshift({
+      id: "ultra-risk",
+      name: "Ultra Risk",
+      original: "3999",
+      price: "2999",
+      isUltraRisk: true
+    });
+
     if (!packages || packages.length === 0) {
       container.innerHTML = '<p style="color:#cfd8e3;">No packages available right now. Please try again in a few seconds.</p>';
       return;
@@ -31,8 +40,9 @@ async function loadPackages() {
 
     let html = "";
     packages.forEach(p => {
+      const cardClass = `card ${p.isUltraRisk ? "ultra-risk" : ""} ${p.name.includes("Weekly") ? "special" : ""}`;
       const card = `
-        <div class="card ${p.name.includes("Weekly") ? "special" : ""}" id="pack-${p.id}" onclick="selectPackage(${p.id})">
+        <div class="${cardClass}" id="pack-${p.id}" onclick="selectPackage(${p.id})">
           <h3>${p.name}</h3>
           <p class="old">₹${p.original}</p>
           <p class="price">₹${p.price}</p>
@@ -244,6 +254,99 @@ function confirmPayment(){
 
 
 
+/* ULTIMATE MODE TOGGLE */
+function applyUltimateMode(value) {
+  const isOn = value === true;
+  document.body.classList.toggle("ultimate-mode", isOn);
+  const button = document.getElementById("ultimateModeBtn");
+  if (button) {
+    button.innerText = `Ultimate Mode: ${isOn ? "On" : "Off"}`;
+  }
+  localStorage.setItem("ultimateMode", isOn ? "1" : "0");
+}
+
+function initUltimateMode() {
+  const saved = localStorage.getItem("ultimateMode");
+  const enabled = saved === "1";
+  applyUltimateMode(enabled);
+
+  const button = document.getElementById("ultimateModeBtn");
+  if (button) {
+    button.addEventListener("click", () => {
+      const active = document.body.classList.toggle("ultimate-mode");
+      applyUltimateMode(active);
+      playSfx("toggle");
+    });
+  }
+}
+
+function playSfx(type) {
+  if (!window.localStorage.getItem("soundEnabled")) {
+    window.localStorage.setItem("soundEnabled", "1");
+  }
+  const soundEnabled = window.localStorage.getItem("soundEnabled") === "1";
+  if (!soundEnabled) return;
+
+  let src = "";
+  if (type === "toggle") src = "https://freesound.org/data/previews/146/146727_2491515-lq.mp3";
+  if (!src) return;
+
+  const audio = new Audio(src);
+  audio.volume = 0.25;
+  audio.play().catch(() => {});
+}
+
+function initParticles() {
+  const canvas = document.getElementById("particleCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+
+  const resize = () => {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+  };
+  resize();
+  window.addEventListener("resize", resize);
+
+  const particles = Array.from({ length: 80 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: 1 + Math.random() * 1.8,
+    vx: (Math.random() - 0.5) * 0.22,
+    vy: (Math.random() - 0.5) * 0.22,
+    alpha: 0.1 + Math.random() * 0.28,
+  }));
+
+  const draw = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < -10) p.x = canvas.width + 10;
+      if (p.x > canvas.width + 10) p.x = -10;
+      if (p.y < -10) p.y = canvas.height + 10;
+      if (p.y > canvas.height + 10) p.y = -10;
+
+      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
+      grad.addColorStop(0, `rgba(0, 255, 190, ${p.alpha})`);
+      grad.addColorStop(1, "rgba(0, 255, 190, 0)");
+
+      ctx.beginPath();
+      ctx.fillStyle = grad;
+      ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  };
+
+  draw();
+}
+
 /* LOAD PACKAGES ON PAGE START */
 
-document.addEventListener("DOMContentLoaded", loadPackages);
+document.addEventListener("DOMContentLoaded", () => {
+  initUltimateMode();
+  initParticles();
+  loadPackages();
+});

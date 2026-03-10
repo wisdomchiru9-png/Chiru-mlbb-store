@@ -36,6 +36,30 @@ h1, h2, h3 {
     pointer-events: none;
 }
 
+.mode-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.ultimate-btn {
+    background: linear-gradient(110deg, #02f8b8, #00a7f5);
+    color: #030a18;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(0,255,175,0.8);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.ultimate-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 26px rgba(0,255,175,1);
+}
+
 .banner h1, .banner p, .features, .logo-wrap {
     position: relative;
     z-index: 2;
@@ -284,6 +308,35 @@ button:hover{
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(0, 255, 213, 0.3);
+}
+
+.card.ultra-risk {
+    background: linear-gradient(135deg, rgba(20, 255, 240, 0.25), rgba(15, 15, 45, 0.85));
+    border: 2px solid #18ffb8;
+    box-shadow: 0 0 18px rgba(0, 255, 255, 0.8), 0 10px 25px rgba(0, 255, 180, 0.35);
+}
+
+.card.ultra-risk h3 {
+    text-shadow: 0 0 18px rgba(20, 255, 255, 0.9);
+}
+
+.card.ultra-risk .price {
+    color: #25ffd8;
+}
+
+#particleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.banner h1, .banner p, .features, .logo-wrap, .mode-switch {
+    position: relative;
+    z-index: 2;
 }
 
 .card h3{
@@ -661,6 +714,22 @@ button:hover{
 @media (max-width: 768px) {
   .premium-title { font-size: 42px; }
   .features div { font-size: 13px; }
+}
+
+body.ultimate-mode {
+    filter: drop-shadow(0 0 18px rgba(12, 255, 190, 0.5));
+    background: radial-gradient(circle at 50% -25%, #042a46, #031d32 45%, #020e22) !important;
+}
+
+body.ultimate-mode .banner {
+    border-bottom: 3px solid rgba(0, 255, 177, 0.9);
+    box-shadow: inset 0 0 18px rgba(0, 255, 190, 0.35), 0 14px 53px rgba(0, 255, 190, 0.45);
+}
+
+body.ultimate-mode .card {
+    border: 1px solid rgba(0, 255, 160, 0.35);
+    box-shadow: 0 12px 28px rgba(0, 255, 165, 0.35), 0 0 32px rgba(0, 255, 165, 0.25);
+    background: linear-gradient(to top, rgba(0, 30, 34, 0.75), rgba(4, 108, 90, 0.52));
 }
 
 .faq-section h2, .contact-methods h2 {
