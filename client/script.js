@@ -1,6 +1,14 @@
 let currentOrder = null;
 let selectedPackageId = null;
 let selectedPaymentMethod = null;
+const API_TIMEOUT = 12000;
+
+function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), API_TIMEOUT);
+  return fetch(url, { ...options, signal: controller.signal })
+    .finally(() => clearTimeout(id));
+}
 
 /* LOAD PACKAGES FROM API */
 
@@ -11,14 +19,18 @@ async function loadPackages() {
 
   try {
 
-    const res = await fetch("/api/packages");
-    const packages = await res.json();
+    const res = await fetchWithTimeout("/api/packages");
+    const packages = res.ok ? await res.json() : [];
 
     container.innerHTML = "";
-    
+
+    if (!packages || packages.length === 0) {
+      container.innerHTML = '<p style="color:#cfd8e3;">No packages available right now. Please try again in a few seconds.</p>';
+      return;
+    }
+
     let html = "";
     packages.forEach(p => {
-      
       const card = `
         <div class="card ${p.name.includes("Weekly") ? "special" : ""}" id="pack-${p.id}" onclick="selectPackage(${p.id})">
           <h3>${p.name}</h3>
@@ -27,16 +39,14 @@ async function loadPackages() {
           <button>Select</button>
         </div>
       `;
-
       html += card;
     });
-    
+
     container.innerHTML = html;
 
   } catch (err) {
-
-    console.log("Packages API unavailable");
-
+    console.log("Packages API unavailable", err);
+    container.innerHTML = '<p style="color:#ff6b6b;">Error loading packages. Please refresh.</p>';
   }
 
 }
@@ -97,36 +107,37 @@ async function checkPlayer(){
   nickElement.innerHTML = "<span style='color:#aaa'>Searching Account...</span>";
 
   try {
-    const res = await fetch("/api/check-player",{
+    const res = await fetchWithTimeout("/api/check-player",{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ uid, server })
     });
 
-    const data = await res.json();
+    const data = res.ok ? await res.json() : null;
 
-    if (res.status === 200 && data && data.nickname) {
-      // Save to cache
+    if (res.ok && data && data.nickname) {
       playerCache[cacheKey] = data.nickname;
-      
       nickElement.innerHTML = "Player: <b style='color:#00ffd5'>" + data.nickname + "</b> ✔";
-      if (data.avatar) document.getElementById("avatar").src = data.avatar;
+      if (data.avatar){
+        const avatar = document.getElementById("avatar");
+        avatar.src = data.avatar;
+        avatar.alt = "Player avatar for " + data.nickname;
+      }
       return;
     }
 
-    if (res.status === 200 && (!data || !data.nickname)) {
+    if (res.ok && data && !data.nickname) {
       nickElement.innerHTML = "Player: <b style='color:#00ffd5'>Unknown</b> ✔";
       return;
     }
 
-    nickElement.innerHTML = "<span style='color:#ff4c4c'>Account Not Found</span>";
-      nickElement.innerHTML = "<span style='color:#ff4c4c'>Account Not Found</span>";
-    }
+    nickElement.innerHTML = "<span style='color:#ff4c4c'>Account Not Found or system busy</span>";
 
   } catch (err) {
     nickElement.innerHTML = "<span style='color:#ff4c4c'>System Busy, Try Again</span>";
   }
 }
+
 
 
 /* INITIATE ORDER (BUY NOW) */

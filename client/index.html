@@ -49,21 +49,21 @@
 </header>
 
 <!-- PLAYER INFO -->
-<div class="player-info">
+<div class="player-info" role="region" aria-label="Player details">
 <h2>Enter Player Details</h2>
 
-<input id="uid" placeholder="Player ID">
-<input id="server" placeholder="Server ID">
+<label for="uid" class="sr-only">Player ID</label>
+<input id="uid" placeholder="Player ID" aria-required="true" autocomplete="off" required>
+<label for="server" class="sr-only">Server ID</label>
+<input id="server" placeholder="Server ID" aria-required="true" autocomplete="off" required>
 <br>
 
-<button onclick="checkPlayer()">Check Player</button>
+<button onclick="checkPlayer()" id="checkPlayerBtn">Check Player</button>
 
 <!-- Avatar + Nickname -->
 <br><br>
-<img id="avatar" width="60"
-src="/icon.png"
-alt="Player Avatar">
-<p id="nickname"></p>
+<img id="avatar" width="60" src="/icon.png" alt="Player Avatar">
+<p id="nickname" aria-live="polite" aria-atomic="true"></p>
 </div>
 
 
