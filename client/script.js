@@ -74,14 +74,17 @@ const playerCache = {};
 
 async function checkPlayer(){
 
-  const uid = document.getElementById("uid").value;
-  const server = document.getElementById("server").value;
+  const uid = document.getElementById("uid").value.trim();
+  const server = document.getElementById("server").value.trim();
   const nickElement = document.getElementById("nickname");
 
   if(uid.length < 5 || server.length < 1){
     nickElement.innerText = "Invalid Player ID or Server";
     return;
   }
+
+  document.getElementById("uid").value = uid;
+  document.getElementById("server").value = server;
 
   // Check cache first for instant results
   const cacheKey = `${uid}-${server}`;

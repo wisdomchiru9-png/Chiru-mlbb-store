@@ -1,0 +1,10 @@
+services:
+  - type: web_service
+    name: chiru-mlbb-store
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    routes:
+      - type: web

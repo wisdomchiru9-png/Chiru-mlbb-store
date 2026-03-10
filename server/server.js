@@ -27,6 +27,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/index.html"));
 });
 
+/* FALLBACK FOR CLIENT-SIDE ROUTING AND DIRECT LINKS */
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/index.html"));
+});
+
 /* START SERVER */
 const PORT = process.env.PORT || 3000;
 
