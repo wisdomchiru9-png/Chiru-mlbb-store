@@ -105,13 +105,21 @@ async function checkPlayer(){
 
     const data = await res.json();
 
-    if (res.status === 200) {
+    if (res.status === 200 && data && data.nickname) {
       // Save to cache
       playerCache[cacheKey] = data.nickname;
       
       nickElement.innerHTML = "Player: <b style='color:#00ffd5'>" + data.nickname + "</b> ✔";
-      if(data.avatar) document.getElementById("avatar").src = data.avatar;
-    } else {
+      if (data.avatar) document.getElementById("avatar").src = data.avatar;
+      return;
+    }
+
+    if (res.status === 200 && (!data || !data.nickname)) {
+      nickElement.innerHTML = "Player: <b style='color:#00ffd5'>Unknown</b> ✔";
+      return;
+    }
+
+    nickElement.innerHTML = "<span style='color:#ff4c4c'>Account Not Found</span>";
       nickElement.innerHTML = "<span style='color:#ff4c4c'>Account Not Found</span>";
     }
 
