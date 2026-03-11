@@ -27,6 +27,24 @@ app.use(cors()); // Allow all for simplicity in this project
 app.use(express.json());
 
 /* =========================
+SECURITY & CHARSET HEADERS
+========================= */
+
+app.use((req, res, next) => {
+  // Security Headers
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  
+  // Set default charset for HTML responses
+  if ((req.url.endsWith(".html") || req.url === "/" || !req.url.includes(".")) && !req.url.startsWith("/api")) {
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+  }
+  
+  next();
+});
+
+/* =========================
 ADMIN AUTH (SIMPLE)
 ========================= */
 
