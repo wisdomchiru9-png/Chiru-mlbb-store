@@ -1,17 +1,26 @@
+```javascript
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const qs = require("querystring");
 
 const packages = require("../config/packages");
-const orders = require("../data/orders"); // shared in-memory order storage
+const orders = require("../data/orders");
 
-/* GET PACKAGES */
+/* =========================
+   GET PACKAGES
+========================= */
+
 router.get("/packages", (req, res) => {
   res.json(packages);
 });
 
-/* CHECK PLAYER */
+/* =========================
+   CHECK PLAYER
+========================= */
+
 router.post("/check-player", async (req, res) => {
+
   let { uid, server } = req.body;
 
   uid = String(uid || "").trim();
@@ -21,7 +30,8 @@ router.post("/check-player", async (req, res) => {
     return res.status(400).json({ error: "Missing UID or Server" });
   }
 
-  // 1. Instant verification for special IDs
+  /* Instant verified players */
+
   const realPlayers = {
     "1041655028": "Wisdom Chiru",
     "663838": "RRQ Lemon",
@@ -29,115 +39,190 @@ router.post("/check-player", async (req, res) => {
   };
 
   if (realPlayers[uid]) {
-    return res.json({ nickname: realPlayers[uid], avatar: "/icon.png" });
+    return res.json({
+      nickname: realPlayers[uid],
+      avatar: "/icon.png"
+    });
   }
 
-  // 2. Parallel Multi-API Lookup for maximum speed
-  const checkRequests = [
-    // VGM API (Fast & Reliable)
-    axios.get(`https://api.vgm.tv/mobile-legends/player/check?userid=${uid}&zoneid=${server}`, {
-      timeout: 8000,
-      headers: { 'User-Agent': 'Mozilla/5.0' }
-    }).catch(e => null),
-    
-    // Smile.one API (Fast Backup)
-    axios.post('https://www.smile.one/merchant/mobilelegends/checkrole', 
-      require('querystring').stringify({
+  /* Multi API Lookup */
+
+  const requests = [
+
+    axios.get(
+      `https://api.vgm.tv/mobile-legends/player/check?userid=${uid}&zoneid=${server}`,
+      {
+        timeout: 8000,
+        headers: { "User-Agent": "Mozilla/5.0" }
+      }
+    ).catch(() => null),
+
+    axios.post(
+      "https://www.smile.one/merchant/mobilelegends/checkrole",
+      qs.stringify({
         user_id: uid,
         zone_id: server,
         pid: 19,
         check_role: 1
-      }), {
+      }),
+      {
         timeout: 8000,
-        headers: { 
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': 'Mozilla/5.0'
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": "Mozilla/5.0"
         }
       }
-    ).catch(e => null)
+    ).catch(() => null)
+
   ];
 
   try {
-    const results = await Promise.all(checkRequests);
-    
-    for (const response of results) {
-      if (!response || !response.data) continue;
-      
-      const payload = response.data;
 
-      // Common fields across multiple API formats
-      let name = payload.name || payload.username || payload.nickname || payload.role_name;
+    const results = await Promise.all(requests);
 
-      // Nested data formats
+    for (const r of results) {
+
+      if (!r || !r.data) continue;
+
+      const payload = r.data;
+
+      let name =
+        payload.name ||
+        payload.username ||
+        payload.nickname ||
+        payload.role_name;
+
       if (!name && payload.data) {
-        name = payload.data.name || payload.data.username || payload.data.nickname || payload.data.role_name || payload.data.player_name || payload.data.role_name;
+        name =
+          payload.data.name ||
+          payload.data.nickname ||
+          payload.data.role_name ||
+          payload.data.player_name;
       }
+
       if (!name && payload.result) {
-        name = payload.result.name || payload.result.role_name;
+        name =
+          payload.result.name ||
+          payload.result.role_name;
       }
-      if (!name && Array.isArray(payload.items) && payload.items.length) {
-        name = payload.items[0].name || payload.items[0].player_name;
+
+      if (
+        !name &&
+        Array.isArray(payload.items) &&
+        payload.items.length
+      ) {
+        name =
+          payload.items[0].name ||
+          payload.items[0].player_name;
       }
 
       if (name) {
-        return res.json({ nickname: String(name).trim(), avatar: "/icon.png" });
+        return res.json({
+          nickname: String(name).trim(),
+          avatar: "/icon.png"
+        });
       }
+
     }
-  } catch (e) {
-    console.log(`Lookup failed for ID ${uid}:`, e.message);
+
+  } catch (err) {
+    console.log("Player lookup failed:", err.message);
   }
 
-  // 3. Final Fallback - Always return user identifier so UI renders reliably
-  return res.json({ nickname: `Player ${uid}`, avatar: "/icon.png" });
+  /* Final fallback */
+
+  return res.json({
+    nickname: `Player ${uid}`,
+    avatar: "/icon.png"
+  });
+
 });
 
-/* CREATE ORDER */
+/* =========================
+   CREATE ORDER
+========================= */
+
 router.post("/create-order", (req, res) => {
+
   const { uid, server, packageId, paymentMethod } = req.body;
 
   if (!uid || !server || !packageId) {
-    return res.status(400).json({ error: "Missing fields" });
+    return res.status(400).json({
+      error: "Missing required fields"
+    });
   }
 
   const selected = packages.find(p => p.id == packageId);
 
   if (!selected) {
-    return res.status(404).json({ error: "Package not found" });
+    return res.status(404).json({
+      error: "Package not found"
+    });
   }
 
   const order = {
+
     orderId: Date.now(),
+
     uid,
     server,
+
     package: selected.name,
+
     price: selected.price,
+
     paymentMethod: paymentMethod || "Unknown",
-    status: "pending" // default status
+
+    status: "pending",
+
+    createdAt: new Date().toISOString()
+
   };
 
-  // ✅ Save order in memory
   orders.push(order);
 
   res.json(order);
+
 });
 
-/* GET ALL ORDERS (ADMIN) */
+/* =========================
+   ADMIN - GET ALL ORDERS
+========================= */
+
 router.get("/orders", (req, res) => {
   res.json(orders);
 });
 
-/* UPDATE ORDER STATUS */
+/* =========================
+   ADMIN - UPDATE ORDER
+========================= */
+
 router.post("/update-order", (req, res) => {
+
   const { orderId, status } = req.body;
+
+  if (!orderId || !status) {
+    return res.status(400).json({
+      error: "Missing orderId or status"
+    });
+  }
 
   const order = orders.find(o => o.orderId == orderId);
 
   if (!order) {
-    return res.status(404).json({ error: "Order not found" });
+    return res.status(404).json({
+      error: "Order not found"
+    });
   }
 
   order.status = status;
-  res.json(order);
+
+  res.json({
+    success: true,
+    order
+  });
+
 });
 
 module.exports = router;
+```

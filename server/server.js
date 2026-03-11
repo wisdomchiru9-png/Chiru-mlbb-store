@@ -1,3 +1,4 @@
+```javascript
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -10,12 +11,11 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-/* Allow your frontend domain */
+/* Allowed Frontend Origins */
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
-  "https://your-frontend.onrender.com",
-  "https://your-frontend.vercel.app"
+  "https://chiru-mlbb-store-1-kv4z.onrender.com"
 ];
 
 /* =========================
@@ -25,16 +25,16 @@ const allowedOrigins = [
 app.use(cors({
   origin: function(origin, callback) {
 
-    if(!origin) return callback(null, true);
+    if (!origin) return callback(null, true);
 
-    if(allowedOrigins.indexOf(origin) === -1){
+    if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
 
     return callback(null, true);
 
   },
-  methods: ["GET","POST"],
+  methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
 
@@ -47,6 +47,7 @@ app.use(express.json());
 const orderRoutes = require("./routes/order");
 
 /* API ROUTES */
+
 app.use("/api", orderRoutes);
 
 /* =========================
@@ -54,28 +55,40 @@ app.use("/api", orderRoutes);
 ========================= */
 
 app.get("/health", (req, res) => {
+
   res.json({
     status: "ok",
     service: "chiru-mlbb-api",
     time: new Date().toISOString()
   });
+
 });
 
 /* =========================
-   STATIC FRONTEND (optional)
-   Only used if frontend
-   is inside same server
+   STATIC FRONTEND
 ========================= */
 
 const clientPath = path.join(__dirname, "../client");
 
 app.use(express.static(clientPath));
 
+/* Home Page */
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(clientPath, "index.html"));
 });
 
-/* fallback for direct links */
+/* =========================
+   ADMIN PANEL
+========================= */
+
+app.get("/admin-secret-chiru", (req, res) => {
+  res.sendFile(path.join(clientPath, "admin.html"));
+});
+
+/* =========================
+   FALLBACK
+========================= */
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(clientPath, "index.html"));
@@ -105,3 +118,4 @@ app.listen(PORT, () => {
   console.log("🌐 Port:", PORT);
 
 });
+```

@@ -1,0 +1,29 @@
+async function loadOrders(){
+
+const res = await fetch("/api/orders");
+
+const orders = await res.json();
+
+let html="";
+
+orders.reverse().forEach(o=>{
+
+html+=`
+<div style="border-bottom:1px solid #333;padding:10px">
+Order: ${o.orderId} <br>
+Player: ${o.uid} (${o.server}) <br>
+Package: ${o.package} <br>
+Price: ₹${o.price} <br>
+Status: ${o.status}
+</div>
+`;
+
+});
+
+document.getElementById("orders").innerHTML = html;
+
+}
+
+loadOrders();
+
+setInterval(loadOrders,5000);
