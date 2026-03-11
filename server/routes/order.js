@@ -5,7 +5,7 @@ const axios = require("axios");
 const qs = require("querystring");
 
 const packages = require("../config/packages");
-const orders = require("../data/orders");
+const orderService = require("../services/orderService");
 
 /* =========================
 GET PACKAGES
@@ -167,48 +167,9 @@ router.post("/create-order", (req, res) => {
     createdAt: new Date().toISOString()
   };
 
-  orders.push(order);
+  orderService.addOrder(order);
 
   res.json(order);
-
-});
-
-/* =========================
-ADMIN - GET ORDERS
-========================= */
-
-router.get("/orders", (req, res) => {
-  res.json(orders);
-});
-
-/* =========================
-ADMIN - UPDATE ORDER
-========================= */
-
-router.post("/update-order", (req, res) => {
-
-  const { orderId, status } = req.body;
-
-  if (!orderId || !status) {
-    return res.status(400).json({
-      error: "Missing orderId or status"
-    });
-  }
-
-  const order = orders.find(o => o.orderId == orderId);
-
-  if (!order) {
-    return res.status(404).json({
-      error: "Order not found"
-    });
-  }
-
-  order.status = status;
-
-  res.json({
-    success: true,
-    order
-  });
 
 });
 

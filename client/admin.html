@@ -1,29 +1,38 @@
-async function loadOrders(){
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHIRU ADMIN PANEL</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { text-align: left; padding: 20px; background: #0f172a; }
+        .admin-container { max-width: 800px; margin: 0 auto; }
+        .order-card { background: #1e293b; border: 1px solid #334155; padding: 15px; margin-bottom: 15px; border-radius: 10px; }
+        .order-card.pending { border-left: 5px solid #eab308; }
+        .order-card.completed { border-left: 5px solid #22c55e; }
+        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .status-pending { background: #854d0e; color: #fef08a; }
+        .status-completed { background: #166534; color: #bbf7d0; }
+        .refresh-btn { background: #00ffd5; color: #0f172a; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
+        .calc-box { background: #1e293b; padding: 20px; border-radius: 10px; margin-top: 40px; }
+        input { background: #0f172a; border: 1px solid #334155; padding: 10px; border-radius: 6px; color: white; margin-right: 10px; width: 150px; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Admin Dashboard</h1>
+        <button class="refresh-btn" onclick="loadOrders()">Refresh Orders</button>
+        <div id="orders">Loading orders...</div>
 
-const res = await fetch("/api/orders");
-
-const orders = await res.json();
-
-let html="";
-
-orders.reverse().forEach(o=>{
-
-html+=`
-<div style="border-bottom:1px solid #333;padding:10px">
-Order: ${o.orderId} <br>
-Player: ${o.uid} (${o.server}) <br>
-Package: ${o.package} <br>
-Price: ₹${o.price} <br>
-Status: ${o.status}
-</div>
-`;
-
-});
-
-document.getElementById("orders").innerHTML = html;
-
-}
-
-loadOrders();
-
-setInterval(loadOrders,5000);
+        <div class="calc-box">
+            <h3>Profit Calculator</h3>
+            <input type="number" id="cost" placeholder="Our Cost (₹)">
+            <input type="number" id="sell" placeholder="Selling Price (₹)">
+            <button onclick="calc()">Calculate</button>
+            <p id="profit" style="margin-top:15px; font-weight:bold; color:#00ffd5;"></p>
+        </div>
+    </div>
+    <script src="/admin.js"></script>
+</body>
+</html>

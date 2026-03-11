@@ -1,4 +1,5 @@
 module.exports = [
+ { id:"ultra-risk", name:"Ultra Risk", original:3999, price:2999, isUltraRisk: true },
  { id:1, name:"11 (10+1) Diamonds", original:39, price:29 },
  { id:2, name:"86 (78+8) Diamonds", original:150, price:130 },
  { id:3, name:"172 (156+16) Diamonds", original:300, price:255 },

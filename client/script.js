@@ -33,14 +33,6 @@ async function loadPackages() {
 
     container.innerHTML = "";
 
-    packages.unshift({
-      id: "ultra-risk",
-      name: "Ultra Risk",
-      original: "3999",
-      price: "2999",
-      isUltraRisk: true
-    });
-
     if (!packages || packages.length === 0) {
       container.innerHTML =
         '<p style="color:#cfd8e3;">No packages available right now.</p>';
@@ -50,20 +42,15 @@ async function loadPackages() {
     let html = "";
 
     packages.forEach(p => {
+      const cardClass = `card ${p.isUltraRisk ? "ultra-risk" : ""} ${p.name?.includes("Weekly") ? "special" : ""}`.trim();
 
-      const cardClass =
-        "card " +
-        (p.isUltraRisk ? "ultra-risk " : "") +
-        (p.name && p.name.includes("Weekly") ? "special" : "");
-
-      html +=
-        '<div class="' + cardClass + '" id="pack-' + p.id + '" onclick="selectPackage(\'' + p.id + '\')">' +
-        '<h3>' + p.name + '</h3>' +
-        '<p class="old">₹' + p.original + '</p>' +
-        '<p class="price">₹' + p.price + '</p>' +
-        '<button>Select</button>' +
-        '</div>';
-
+      html += `
+        <div class="${cardClass}" id="pack-${p.id}" onclick="selectPackage('${p.id}')">
+          <h3>${p.name}</h3>
+          <p class="old">₹${p.original}</p>
+          <p class="price">₹${p.price}</p>
+          <button>Select</button>
+        </div>`;
     });
 
     container.innerHTML = html;
@@ -357,6 +344,16 @@ function initUltimateMode() {
 
   applyUltimateMode(enabled);
 
+  const button =
+    document.getElementById("ultimateModeBtn");
+
+  if (button) {
+    button.addEventListener("click", () => {
+      const isCurrentlyOn = document.body.classList.contains("ultimate-mode");
+      applyUltimateMode(!isCurrentlyOn);
+    });
+  }
+
 }
 
 /* ---------------------------
@@ -432,6 +429,19 @@ function initParticles() {
 PAGE INIT
 ---------------------------- */
 
+async function checkVersion() {
+  try {
+    const res = await fetch("/version.json");
+    if (!res.ok) return;
+    const data = await res.json();
+    const current = localStorage.getItem("app_version");
+    if (current && current !== data.version) {
+      document.getElementById("updateBanner").style.display = "block";
+    }
+    localStorage.setItem("app_version", data.version);
+  } catch (e) {}
+}
+
 document.addEventListener(
   "DOMContentLoaded",
   function () {
@@ -439,6 +449,7 @@ document.addEventListener(
     initUltimateMode();
     initParticles();
     loadPackages();
+    checkVersion();
 
   }
 );

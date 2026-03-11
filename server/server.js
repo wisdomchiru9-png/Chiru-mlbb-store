@@ -13,34 +13,33 @@ const PORT = process.env.PORT || 3000;
 /* Allowed Frontend Origins */
 
 const allowedOrigins = [
-"http://localhost:3000",
-"http://localhost:5173",
-"https://chiru-mlbb-store-1-kv4z.onrender.com"
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://chiru-mlbb-store-1-kv4z.onrender.com"
 ];
 
 /* =========================
 MIDDLEWARE
 ========================= */
 
-app.use(cors({
-origin: (origin, callback) => {
-
-```
-if (!origin) return callback(null, true);
-
-if (allowedOrigins.includes(origin)) {
-  return callback(null, true);
-}
-
-return callback(null, true);
-```
-
-},
-methods: ["GET", "POST"],
-allowedHeaders: ["Content-Type"]
-}));
+app.use(cors()); // Allow all for simplicity in this project
 
 app.use(express.json());
+
+/* =========================
+ADMIN AUTH (SIMPLE)
+========================= */
+
+const ADMIN_PASS = "chiru2026"; // Simple admin password
+
+function adminAuth(req, res, next) {
+  const auth = req.headers['x-admin-pass'];
+  if (auth === ADMIN_PASS) {
+    next();
+  } else {
+    res.status(401).json({ error: "Unauthorized" });
+  }
+}
 
 /* =========================
 ROUTES
@@ -51,6 +50,21 @@ const orderRoutes = require("./routes/order");
 /* API ROUTES */
 
 app.use("/api", orderRoutes);
+
+/* ADMIN PROTECTED API */
+app.get("/admin/api/orders", adminAuth, (req, res) => {
+  const orderService = require("./services/orderService");
+  res.json(orderService.getOrders());
+});
+
+app.post("/admin/api/update-order", adminAuth, (req, res) => {
+  const orderService = require("./services/orderService");
+  const { orderId, status } = req.body;
+  if (!orderId || !status) return res.status(400).json({ error: "Missing fields" });
+  const success = orderService.updateOrderStatus(orderId, status);
+  if (!success) return res.status(404).json({ error: "Order not found" });
+  res.json({ success: true });
+});
 
 /* =========================
 HEALTH CHECK
