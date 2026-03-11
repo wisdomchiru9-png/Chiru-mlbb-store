@@ -3,13 +3,7 @@ services:
     name: chiru-mlbb-api
     env: node
     plan: free
-    rootDir: server
     buildCommand: npm install
-    startCommand: node server.js
+    startCommand: node server/server.js
     healthCheckPath: /health
     autoDeploy: true
-
-  - type: static
-    name: chiru-mlbb-store
-    rootDir: client
-    staticPublishPath: .

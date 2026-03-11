@@ -37,7 +37,11 @@ app.use((req, res, next) => {
   res.setHeader("X-XSS-Protection", "1; mode=block");
   
   // Set default charset for HTML responses
-  if ((req.url.endsWith(".html") || req.url === "/" || !req.url.includes(".")) && !req.url.startsWith("/api")) {
+  // Only apply to HTML pages, not to JSON API or static files like images/scripts
+  const isApi = req.url.includes("/api/");
+  const isStaticFile = req.url.includes(".");
+  
+  if ((req.url.endsWith(".html") || req.url === "/" || !isStaticFile) && !isApi) {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
   }
   
@@ -104,20 +108,22 @@ STATIC FRONTEND
 
 const clientPath = path.join(__dirname, "../client");
 
+/* ADMIN PANEL (Must be before express.static and fallback) */
+
+app.get("/admin", (req, res) => {
+  res.redirect("/admin-secret-chiru");
+});
+
+app.get("/admin-secret-chiru", (req, res) => {
+  res.sendFile(path.join(clientPath, "admin.html"));
+});
+
 app.use(express.static(clientPath));
 
 /* Home Page */
 
 app.get("/", (req, res) => {
-res.sendFile(path.join(clientPath, "index.html"));
-});
-
-/* =========================
-ADMIN PANEL
-========================= */
-
-app.get("/admin-secret-chiru", (req, res) => {
-res.sendFile(path.join(clientPath, "admin.html"));
+  res.sendFile(path.join(clientPath, "index.html"));
 });
 
 /* =========================
