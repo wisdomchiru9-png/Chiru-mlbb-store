@@ -1,10 +1,15 @@
 services:
-  - type: web_service
-    name: chiru-mlbb-store
+  - type: web
+    name: chiru-mlbb-api
     env: node
     plan: free
+    rootDir: server
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node server.js
     healthCheckPath: /health
-    routes:
-      - type: web
+    autoDeploy: true
+
+  - type: static
+    name: chiru-mlbb-store
+    rootDir: client
+    staticPublishPath: .
