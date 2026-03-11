@@ -1,4 +1,3 @@
-```javascript
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -6,42 +5,45 @@ const path = require("path");
 const app = express();
 
 /* =========================
-   CONFIG
+CONFIG
 ========================= */
 
 const PORT = process.env.PORT || 3000;
 
 /* Allowed Frontend Origins */
+
 const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:5173",
-  "https://chiru-mlbb-store-1-kv4z.onrender.com"
+"http://localhost:3000",
+"http://localhost:5173",
+"https://chiru-mlbb-store-1-kv4z.onrender.com"
 ];
 
 /* =========================
-   MIDDLEWARE
+MIDDLEWARE
 ========================= */
 
 app.use(cors({
-  origin: function(origin, callback) {
+origin: (origin, callback) => {
 
-    if (!origin) return callback(null, true);
+```
+if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
+if (allowedOrigins.includes(origin)) {
+  return callback(null, true);
+}
 
-    return callback(null, true);
+return callback(null, true);
+```
 
-  },
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
+},
+methods: ["GET", "POST"],
+allowedHeaders: ["Content-Type"]
 }));
 
 app.use(express.json());
 
 /* =========================
-   ROUTES
+ROUTES
 ========================= */
 
 const orderRoutes = require("./routes/order");
@@ -51,21 +53,21 @@ const orderRoutes = require("./routes/order");
 app.use("/api", orderRoutes);
 
 /* =========================
-   HEALTH CHECK
+HEALTH CHECK
 ========================= */
 
 app.get("/health", (req, res) => {
 
-  res.json({
-    status: "ok",
-    service: "chiru-mlbb-api",
-    time: new Date().toISOString()
-  });
+res.json({
+status: "ok",
+service: "chiru-mlbb-api",
+time: new Date().toISOString()
+});
 
 });
 
 /* =========================
-   STATIC FRONTEND
+STATIC FRONTEND
 ========================= */
 
 const clientPath = path.join(__dirname, "../client");
@@ -75,47 +77,47 @@ app.use(express.static(clientPath));
 /* Home Page */
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(clientPath, "index.html"));
+res.sendFile(path.join(clientPath, "index.html"));
 });
 
 /* =========================
-   ADMIN PANEL
+ADMIN PANEL
 ========================= */
 
 app.get("/admin-secret-chiru", (req, res) => {
-  res.sendFile(path.join(clientPath, "admin.html"));
+res.sendFile(path.join(clientPath, "admin.html"));
 });
 
 /* =========================
-   FALLBACK
+FALLBACK
 ========================= */
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(clientPath, "index.html"));
+res.sendFile(path.join(clientPath, "index.html"));
 });
 
 /* =========================
-   ERROR HANDLER
+ERROR HANDLER
 ========================= */
 
 app.use((err, req, res, next) => {
 
-  console.error("Server error:", err);
+console.error("Server error:", err);
 
-  res.status(500).json({
-    error: "Internal Server Error"
-  });
+res.status(500).json({
+error: "Internal Server Error"
+});
 
 });
 
 /* =========================
-   START SERVER
+START SERVER
 ========================= */
 
 app.listen(PORT, () => {
 
-  console.log("🚀 CHIRU MLBB API running");
-  console.log("🌐 Port:", PORT);
+console.log("🚀 CHIRU MLBB API running");
+console.log(`🌐 Server started on port ${PORT}`);
 
 });
-```
+
