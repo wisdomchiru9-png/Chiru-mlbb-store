@@ -1,4 +1,3 @@
-```javascript
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
@@ -174,4 +173,3 @@ router.post("/create-order", (req, res) => {
 });
 
 module.exports = router;
-```

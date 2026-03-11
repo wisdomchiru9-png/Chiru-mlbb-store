@@ -1,4 +1,3 @@
-```javascript
 /* ------------------------------
    CHIRU MLBB STORE ADMIN PANEL
 --------------------------------*/
@@ -165,4 +164,3 @@ loadOrders();
 /* refresh every 5 seconds */
 
 setInterval(loadOrders, 5000);
-```
