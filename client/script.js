@@ -10,13 +10,11 @@ FETCH WITH TIMEOUT
 ---------------------------- */
 
 function fetchWithTimeout(url, options = {}) {
-
 const controller = new AbortController();
 const id = setTimeout(() => controller.abort(), API_TIMEOUT);
 
 return fetch(url, { ...options, signal: controller.signal })
 .finally(() => clearTimeout(id));
-
 }
 
 /* ---------------------------
@@ -31,7 +29,7 @@ if (!container) return;
 try {
 
 ```
-const res = await fetchWithTimeout(`${API_BASE}/api/packages`);
+const res = await fetchWithTimeout(API_BASE + "/api/packages");
 const packages = res.ok ? await res.json() : [];
 
 container.innerHTML = "";
@@ -45,10 +43,8 @@ packages.unshift({
 });
 
 if (!packages || packages.length === 0) {
-
   container.innerHTML =
     '<p style="color:#cfd8e3;">No packages available right now.</p>';
-
   return;
 }
 
@@ -57,22 +53,26 @@ let html = "";
 packages.forEach(p => {
 
   const cardClass =
-    `card ${p.isUltraRisk ? "ultra-risk" : ""} ${p.name.includes("Weekly") ? "special" : ""}`;
+    "card " +
+    (p.isUltraRisk ? "ultra-risk " : "") +
+    (p.name && p.name.includes("Weekly") ? "special" : "");
 
-  html += `
-  <div class="${cardClass}" id="pack-${p.id}" onclick="selectPackage('${p.id}')">
-    <h3>${p.name}</h3>
-    <p class="old">₹${p.original}</p>
-    <p class="price">₹${p.price}</p>
-    <button>Select</button>
-  </div>
-  `;
+  html +=
+    '<div class="' + cardClass + '" id="pack-' + p.id + '" onclick="selectPackage(\'' + p.id + '\')">' +
+    '<h3>' + p.name + '</h3>' +
+    '<p class="old">₹' + p.original + '</p>' +
+    '<p class="price">₹' + p.price + '</p>' +
+    '<button>Select</button>' +
+    '</div>';
+
 });
 
 container.innerHTML = html;
 ```
 
-} catch (err) {
+}
+
+catch (err) {
 
 ```
 console.log("Packages API unavailable", err);
@@ -121,9 +121,7 @@ cards.forEach(c => {
 c.classList.remove("selected-payment");
 
 if (c.querySelector("h3").innerText === method) {
-
   c.classList.add("selected-payment");
-
 }
 ```
 
@@ -159,7 +157,7 @@ return;
 
 }
 
-const cacheKey = `${uid}-${server}`;
+const cacheKey = uid + "-" + server;
 
 if (playerCache[cacheKey]) {
 
@@ -181,7 +179,7 @@ try {
 
 ```
 const res =
-  await fetchWithTimeout(`${API_BASE}/api/check-player`, {
+  await fetchWithTimeout(API_BASE + "/api/check-player", {
 
     method: "POST",
 
@@ -206,12 +204,7 @@ if (res.ok && data && data.nickname) {
     "</b> ✔";
 
   if (data.avatar) {
-
-    const avatar =
-      document.getElementById("avatar");
-
-    avatar.src = data.avatar;
-
+    document.getElementById("avatar").src = data.avatar;
   }
 
   return;
@@ -241,21 +234,13 @@ CREATE ORDER
 async function initiateOrder() {
 
 if (!selectedPackageId) {
-
-```
 alert("Select a Diamond Package first!");
 return;
-```
-
 }
 
 if (!selectedPaymentMethod) {
-
-```
 alert("Select Payment Method!");
 return;
-```
-
 }
 
 const uid =
@@ -265,19 +250,15 @@ const server =
 document.getElementById("server").value;
 
 if (!uid || !server) {
-
-```
 alert("Enter Player ID and Server ID!");
 return;
-```
-
 }
 
 try {
 
 ```
 const res =
-  await fetch(`${API_BASE}/api/create-order`, {
+  await fetch(API_BASE + "/api/create-order", {
 
     method: "POST",
 
@@ -334,24 +315,16 @@ PAYMENT CONFIRMATION
 function confirmPayment() {
 
 if (!currentOrder) {
-
-```
 alert("Create order first");
 return;
-```
-
 }
 
 const fileInput =
 document.getElementById("paymentProof");
 
 if (fileInput.files.length === 0) {
-
-```
 alert("Upload payment screenshot");
 return;
-```
-
 }
 
 const message =
@@ -395,7 +368,7 @@ if (button) {
 
 ```
 button.innerText =
-  `Ultimate Mode: ${isOn ? "On" : "Off"}`;
+  "Ultimate Mode: " + (isOn ? "On" : "Off");
 ```
 
 }
@@ -433,24 +406,14 @@ if (!canvas) return;
 const ctx =
 canvas.getContext("2d");
 
-const resize = () => {
-
-```
-canvas.width =
-  canvas.clientWidth;
-
-canvas.height =
-  canvas.clientHeight;
-```
-
-};
+function resize() {
+canvas.width = canvas.clientWidth;
+canvas.height = canvas.clientHeight;
+}
 
 resize();
 
-window.addEventListener(
-"resize",
-resize
-);
+window.addEventListener("resize", resize);
 
 const particles =
 Array.from({ length: 80 }, () => ({
@@ -466,15 +429,10 @@ Array.from({ length: 80 }, () => ({
 }));
 ```
 
-const draw = () => {
+function draw() {
 
 ```
-ctx.clearRect(
-  0,
-  0,
-  canvas.width,
-  canvas.height
-);
+ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 particles.forEach(p => {
 
@@ -490,15 +448,9 @@ particles.forEach(p => {
   ctx.beginPath();
 
   ctx.fillStyle =
-    `rgba(0,255,190,${p.alpha})`;
+    "rgba(0,255,190," + p.alpha + ")";
 
-  ctx.arc(
-    p.x,
-    p.y,
-    p.r,
-    0,
-    Math.PI * 2
-  );
+  ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
 
   ctx.fill();
 
@@ -507,7 +459,7 @@ particles.forEach(p => {
 requestAnimationFrame(draw);
 ```
 
-};
+}
 
 draw();
 
@@ -525,7 +477,7 @@ try {
 
 ```
 const res =
-  await fetch(`/version.json?t=${Date.now()}`);
+  await fetch("/version.json?t=" + Date.now());
 
 if (!res.ok) return;
 
@@ -563,7 +515,7 @@ PAGE INIT
 
 document.addEventListener(
 "DOMContentLoaded",
-() => {
+function () {
 
 ```
 initUltimateMode();
