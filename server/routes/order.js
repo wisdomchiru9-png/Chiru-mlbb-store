@@ -8,7 +8,7 @@ const packages = require("../config/packages");
 const orders = require("../data/orders");
 
 /* =========================
-   GET PACKAGES
+GET PACKAGES
 ========================= */
 
 router.get("/packages", (req, res) => {
@@ -16,7 +16,7 @@ router.get("/packages", (req, res) => {
 });
 
 /* =========================
-   CHECK PLAYER
+CHECK PLAYER
 ========================= */
 
 router.post("/check-player", async (req, res) => {
@@ -45,7 +45,7 @@ router.post("/check-player", async (req, res) => {
     });
   }
 
-  /* Multi API Lookup */
+  /* MULTI API LOOKUP */
 
   const requests = [
 
@@ -106,11 +106,7 @@ router.post("/check-player", async (req, res) => {
           payload.result.role_name;
       }
 
-      if (
-        !name &&
-        Array.isArray(payload.items) &&
-        payload.items.length
-      ) {
+      if (!name && Array.isArray(payload.items) && payload.items.length) {
         name =
           payload.items[0].name ||
           payload.items[0].player_name;
@@ -129,7 +125,7 @@ router.post("/check-player", async (req, res) => {
     console.log("Player lookup failed:", err.message);
   }
 
-  /* Final fallback */
+  /* FALLBACK PLAYER */
 
   return res.json({
     nickname: `Player ${uid}`,
@@ -139,7 +135,7 @@ router.post("/check-player", async (req, res) => {
 });
 
 /* =========================
-   CREATE ORDER
+CREATE ORDER
 ========================= */
 
 router.post("/create-order", (req, res) => {
@@ -161,22 +157,14 @@ router.post("/create-order", (req, res) => {
   }
 
   const order = {
-
     orderId: Date.now(),
-
     uid,
     server,
-
     package: selected.name,
-
     price: selected.price,
-
     paymentMethod: paymentMethod || "Unknown",
-
     status: "pending",
-
     createdAt: new Date().toISOString()
-
   };
 
   orders.push(order);
@@ -186,7 +174,7 @@ router.post("/create-order", (req, res) => {
 });
 
 /* =========================
-   ADMIN - GET ALL ORDERS
+ADMIN - GET ORDERS
 ========================= */
 
 router.get("/orders", (req, res) => {
@@ -194,7 +182,7 @@ router.get("/orders", (req, res) => {
 });
 
 /* =========================
-   ADMIN - UPDATE ORDER
+ADMIN - UPDATE ORDER
 ========================= */
 
 router.post("/update-order", (req, res) => {
