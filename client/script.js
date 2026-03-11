@@ -8,10 +8,7 @@ const API_TIMEOUT = 12000;
    BACKEND CONFIG
 ---------------------------- */
 
-const API_BASE = "https://YOUR-RENDER-BACKEND.onrender.com";
-
-/* Wake backend silently */
-fetch(API_BASE).catch(()=>{});
+const API_BASE = "";
 
 /* ---------------------------
    FETCH WITH TIMEOUT
