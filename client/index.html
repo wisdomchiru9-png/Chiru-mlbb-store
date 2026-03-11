@@ -1,44 +1,63 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>CHIRU MLBB STORE | Instant MLBB Diamond Recharge</title>
 
 <!-- SEO Meta Tags -->
+
 <meta name="description" content="Chiru MLBB Store - The fastest and most reliable way to recharge Mobile Legends diamonds in India. Instant delivery, secure UPI payments, and best prices.">
 <meta name="keywords" content="MLBB, Mobile Legends, Diamond Recharge, Chiru MLBB Store, ML Diamonds, Cheap ML Diamonds India, MLBB Topup">
 <meta name="author" content="Wisdom Chiru">
 
-<!-- Social Media (Open Graph) Meta Tags -->
+<!-- Open Graph -->
+
 <meta property="og:title" content="CHIRU MLBB STORE | Instant Diamond Recharge">
 <meta property="og:description" content="Get your MLBB diamonds instantly! Best prices and secure UPI payments.">
-<meta property="og:image" content="https://chiru-mlbb-store-1.onrender.com/icon.png">
-<meta property="og:url" content="https://chiru-mlbb-store-1.onrender.com">
+<meta property="og:image" content="https://chiru-mlbb-store-1-kv4z.onrender.com/icon.png">
+<meta property="og:url" content="https://chiru-mlbb-store-1-kv4z.onrender.com">
 <meta property="og:type" content="website">
 
-<!-- Instagram/Twitter Meta Tags -->
+<!-- Twitter -->
+
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CHIRU MLBB STORE">
 <meta name="twitter:description" content="Instant MLBB Diamond Recharge at Best Prices.">
-<meta name="twitter:image" content="https://chiru-mlbb-store-1.onrender.com/icon.png">
+<meta name="twitter:image" content="https://chiru-mlbb-store-1-kv4z.onrender.com/icon.png">
 
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="/mlbb-icon.png" type="image/png">
+<!-- Styles -->
+
+<link rel="stylesheet" href="/style.css">
+
+<!-- Favicon -->
+
+<link rel="icon" href="/icon.png" type="image/png">
+
+<!-- PWA -->
+
 <link rel="manifest" href="/manifest.json">
-<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 
 </head>
 
 <body>
 
 <header class="banner">
+
 <canvas id="particleCanvas" aria-hidden="true"></canvas>
+
 <div class="logo-wrap">
-    <img src="mlbb-icon.png" alt="CHIRU MLBB STORE logo" class="app-logo" loading="lazy">
-    <div>
-        <h1 class="premium-title">MLBB <span class="text-gradient">CHIRU</span> <span class="outline-text">STORE</span></h1>
-    </div>
+<img src="/icon.png" alt="CHIRU MLBB STORE logo" class="app-logo" loading="lazy">
+
+<div>
+<h1 class="premium-title">
+MLBB <span class="text-gradient">CHIRU</span>
+<span class="outline-text">STORE</span>
+</h1>
+</div>
+
 </div>
 
 <div class="features">
@@ -46,121 +65,163 @@
 <div>🔒 Secure Payment</div>
 <div>💎 Best Prices</div>
 </div>
+
 <div class="mode-switch">
-  <button id="ultimateModeBtn" class="ultimate-btn" aria-label="Toggle ultimate mode">Ultimate Mode: Off</button>
+<button id="ultimateModeBtn" class="ultimate-btn">
+Ultimate Mode: Off
+</button>
 </div>
+
 </header>
 
 <!-- PLAYER INFO -->
-<div class="player-info" role="region" aria-label="Player details">
+
+<div class="player-info">
+
 <h2>Enter Player Details</h2>
 
-<label for="uid" class="sr-only">Player ID</label>
-<input id="uid" placeholder="Player ID" aria-required="true" autocomplete="off" required>
-<label for="server" class="sr-only">Server ID</label>
-<input id="server" placeholder="Server ID" aria-required="true" autocomplete="off" required>
+<input id="uid" placeholder="Player ID" required>
+
+<input id="server" placeholder="Server ID" required>
+
 <br>
 
-<button onclick="checkPlayer()" id="checkPlayerBtn">Check Player</button>
+<button onclick="checkPlayer()">Check Player</button>
 
-<!-- Avatar + Nickname -->
 <br><br>
+
 <img id="avatar" width="60" src="/icon.png" alt="Player Avatar">
-<p id="nickname" aria-live="polite" aria-atomic="true"></p>
+
+<p id="nickname"></p>
+
 </div>
 
+<!-- PACKAGES -->
 
-<!-- DIAMOND PACKAGES -->
 <section class="packages">
 
 <h2>1. Select Diamond Package</h2>
 
-<div class="package-grid" id="packages">
-    <!-- Packages will be loaded dynamically -->
-</div>
+<div class="package-grid" id="packages"></div>
+
 </section>
 
 <!-- PAYMENT METHODS -->
+
 <section class="payment-section">
-    <h2>2. Select Payment Method</h2>
-    <div class="payment-grid">
-        <div class="payment-card" onclick="selectPayment('UPI')">
-            <h3>UPI</h3>
-            <p>Google Pay, PhonePe, Paytm</p>
-        </div>
-        <div class="payment-card" onclick="selectPayment('Bank Transfer')">
-            <h3>Bank Transfer</h3>
-            <p>IMPS / NEFT</p>
-        </div>
-        <div class="payment-card" onclick="selectPayment('Wallet')">
-            <h3>Wallet</h3>
-            <p>Paytm Wallet</p>
-        </div>
-    </div>
+
+<h2>2. Select Payment Method</h2>
+
+<div class="payment-grid">
+
+<div class="payment-card" onclick="selectPayment('UPI')">
+<h3>UPI</h3>
+<p>Google Pay, PhonePe, Paytm</p>
+</div>
+
+<div class="payment-card" onclick="selectPayment('Bank Transfer')">
+<h3>Bank Transfer</h3>
+<p>IMPS / NEFT</p>
+</div>
+
+<div class="payment-card" onclick="selectPayment('Wallet')">
+<h3>Wallet</h3>
+<p>Paytm Wallet</p>
+</div>
+
+</div>
+
 </section>
 
 <!-- BUY BUTTON -->
+
 <div class="action-area">
-    <button id="buyBtn" onclick="initiateOrder()">BUY NOW</button>
+
+<button onclick="initiateOrder()">BUY NOW</button>
+
 </div>
 
-<!-- TRUST SECTION -->
+<!-- TRUST -->
+
 <section class="trust-section">
-    <h2>Trusted by Thousands</h2>
-    <p>We pride ourselves on being the fastest and most reliable MLBB shop in India.</p>
-    
-    <div class="stats-grid">
-        <div class="stat-item">
-            <h3>50,000+</h3>
-            <p>Successful Orders</p>
-        </div>
-        <div class="stat-item">
-            <h3>15,000+</h3>
-            <p>Happy Customers</p>
-        </div>
-        <div class="stat-item">
-            <h3>24/7</h3>
-            <p>Support Ready</p>
-        </div>
-        <div class="stat-item">
-            <h3>Instant</h3>
-            <p>Delivery Speed</p>
-        </div>
-    </div>
+
+<h2>Trusted by Thousands</h2>
+
+<p>We pride ourselves on being the fastest and most reliable MLBB shop in India.</p>
+
+<div class="stats-grid">
+
+<div class="stat-item">
+<h3>50,000+</h3>
+<p>Successful Orders</p>
+</div>
+
+<div class="stat-item">
+<h3>15,000+</h3>
+<p>Happy Customers</p>
+</div>
+
+<div class="stat-item">
+<h3>24/7</h3>
+<p>Support Ready</p>
+</div>
+
+<div class="stat-item">
+<h3>Instant</h3>
+<p>Delivery Speed</p>
+</div>
+
+</div>
+
 </section>
 
-<!-- SUPPORT SECTION -->
+<!-- SUPPORT -->
+
 <section class="support-section">
-    <div class="support-container">
-        <h2>Customer Support</h2>
-        <p>Need help with your order? Our support team is here for you 24/7.</p>
-        
-        <div class="support-links">
-            <a href="https://wa.me/919863713522" target="_blank" class="support-btn">
-                <span>WhatsApp Support</span>
-            </a>
-            <a href="https://instagram.com/chiru_mlbb_store" target="_blank" class="support-btn">
-                <span>Instagram DM</span>
-            </a>
-        </div>
-        <p style="margin-top: 20px;"><a href="support.html" style="color: #00ffd5; text-decoration: none; font-weight: 600;">View FAQs & Help Guide →</a></p>
-    </div>
-</section>
 
-<!-- Floating WhatsApp Button -->
-<a href="https://wa.me/919863713522" target="_blank" class="whatsapp-btn">
-    <span>💬</span>
+<div class="support-container">
+
+<h2>Customer Support</h2>
+
+<p>Need help with your order? Our support team is here for you 24/7.</p>
+
+<div class="support-links">
+
+<a href="https://wa.me/919863713522" target="_blank" class="support-btn">
+WhatsApp Support
 </a>
 
+<a href="https://instagram.com/chiru_mlbb_store" target="_blank" class="support-btn">
+Instagram DM
+</a>
+
+</div>
+
+<p style="margin-top:20px;">
+<a href="/support.html" style="color:#00ffd5;text-decoration:none;font-weight:600;">
+View FAQs & Help Guide →
+</a>
+</p>
+
+</div>
+
+</section>
+
+<!-- FLOATING WHATSAPP -->
+
+<a href="https://wa.me/919863713522" target="_blank" class="whatsapp-btn">
+💬
+</a>
 
 <!-- PAYMENT BOX -->
+
 <div id="orderBox" class="hidden">
 
 <h2>Complete Payment</h2>
 
 <p id="orderInfo"></p>
 
-<img src="upi-qr.png" width="220" alt="UPI QR">
+<img src="/upi-qr.png" width="220" alt="UPI QR">
 
 <br><br>
 
@@ -170,7 +231,7 @@
 
 <p><b>Upload Payment Screenshot</b></p>
 
-<input type="file" id="paymentProof" accept="image/*" required>
+<input type="file" id="paymentProof" accept="image/*">
 
 <br><br>
 
@@ -178,13 +239,19 @@
 
 </div>
 
-
 <footer>
-<p><a href="support.html" style="color: #888; text-decoration: none; margin-right: 15px;">Support</a> | <a href="/" style="color: #888; text-decoration: none; margin-left: 15px;">Home</a></p>
+
+<p>
+<a href="/support.html" style="color:#888;text-decoration:none;margin-right:15px;">Support</a>
+|
+<a href="/" style="color:#888;text-decoration:none;margin-left:15px;">Home</a>
+</p>
+
 <p>Powered by CHIRU MLBB STORE</p>
+
 </footer>
 
-<script src="script.js"></script>
+<script src="/script.js"></script>
 
 </body>
 </html>
