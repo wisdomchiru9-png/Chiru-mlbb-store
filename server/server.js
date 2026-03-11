@@ -153,9 +153,17 @@ START SERVER
 ========================= */
 
 app.listen(PORT, () => {
+  console.log("🚀 CHIRU MLBB API running");
+  console.log(`🌐 Server started on port ${PORT}`);
 
-console.log("🚀 CHIRU MLBB API running");
-console.log(`🌐 Server started on port ${PORT}`);
-
+  // SELF-PING SYSTEM (To help prevent sleep on Render Free Plan)
+  // This pings the server every 10 minutes.
+  const self_url = "https://chiru-mlbb-store.onrender.com/health";
+  const axios = require("axios");
+  setInterval(() => {
+    axios.get(self_url)
+      .then(() => console.log("Self-ping successful: Service kept awake"))
+      .catch(err => console.log("Self-ping failed:", err.message));
+  }, 10 * 60 * 1000); // 10 minutes
 });
 
